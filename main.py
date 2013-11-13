@@ -4,6 +4,7 @@
 from __future__ import unicode_literals
 
 import codecs
+import logging
 import socket
 import sys
 import threading
@@ -26,6 +27,7 @@ TIMERS = {}
 
 
 def main():
+    logging.basicConfig(level=logging.INFO)
     auth = tweepy.auth.OAuthHandler(_CONSUMER_KEY, _CONSUMER_SECRET)
     auth.set_access_token(_ACCESS_TOKEN, _ACCESS_TOKEN_SECRET)
 
@@ -56,12 +58,12 @@ def turn_on_five_seconds(i):
 
 
 def turn_on_now(i):
-    print("ON: #{}".format(i))
+    logging.debug("ON: #{}".format(i))
     send_udp_data(IP, UDP_PORT, str('N:0000:1{}01:0001:1'.format(i + 2)))
 
 
 def turn_off_now(i):
-    print("OFF: #{}".format(i))
+    logging.debug("OFF: #{}".format(i))
     send_udp_data(IP, UDP_PORT, str('N:0000:1{}01:0001:0'.format(i + 2)))
 
 
