@@ -8,6 +8,7 @@ import logging
 import socket
 import sys
 import threading
+import textwrap
 import os
 
 import tweepy
@@ -42,8 +43,11 @@ def tweet_callback(status):
     #                                   status.source))
     for i, hashtag in enumerate(HASHTAGS):
         if hashtag.lower() in status.text.lower():
-            print("'{}' in @{}: {}".format(
-                hashtag, status.author.screen_name, status.text))
+            for line in textwrap.wrap('{}'.format(status.text)):
+                print(line)
+            print('    - @{}\n'.format(status.author.screen_name))
+            #print("'{}' in @{}: {}".format(
+            #    hashtag, status.author.screen_name, status.text))
             turn_on_five_seconds(i)
 
 
