@@ -11,7 +11,7 @@ import os
 
 import tweepy
 
-HASHTAGS = ['#IoT', 'python']
+HASHTAGS = os.environ['HASHTAGS'].split(',')
 
 IP = os.environ['ULTAMATION_IP']
 UDP_PORT = int(os.environ['ULTAMATION_UDP_PORT'])
