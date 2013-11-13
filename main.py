@@ -28,7 +28,6 @@ TIMERS = {}
 def main():
     auth = tweepy.auth.OAuthHandler(_CONSUMER_KEY, _CONSUMER_SECRET)
     auth.set_access_token(_ACCESS_TOKEN, _ACCESS_TOKEN_SECRET)
-    #api = tweepy.API(auth)
 
     stream = tweepy.Stream(auth, CustomStreamListener(tweet_callback))
     stream.filter(None, HASHTAGS)  # blocking function
@@ -41,10 +40,9 @@ def tweet_callback(status):
     #                                   status.source))
     for i, hashtag in enumerate(HASHTAGS):
         if hashtag.lower() in status.text.lower():
-            print("'{}' in tweet".format(hashtag))
+            print("'{}' in @{}: {}".format(
+                hashtag, status.author.screen_name, status.text))
             turn_on_five_seconds(i)
-        else:
-            print("'{}' NOT in: {}".format(hashtag, status.text))
 
 
 def turn_on_five_seconds(i):
