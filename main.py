@@ -4,6 +4,7 @@
 from __future__ import unicode_literals
 
 import codecs
+import socket
 import sys
 import threading
 import os
@@ -55,11 +56,19 @@ def turn_on_five_seconds(i):
 
 
 def turn_on_now(i):
-    print("ON: {}".format(i))
+    print("ON: #{}".format(i))
+    send_udp_data(IP, UDP_PORT, str('N:0000:1{}01:0001:1'.format(i + 2)))
 
 
 def turn_off_now(i):
-    print("OFF: {}".format(i))
+    print("OFF: #{}".format(i))
+    send_udp_data(IP, UDP_PORT, str('N:0000:1{}01:0001:0'.format(i + 2)))
+
+
+def send_udp_data(ip, port, data):
+    sock = socket.socket(socket.AF_INET,     # Internet
+                         socket.SOCK_DGRAM)  # UDP
+    sock.sendto(data, (ip, port))
 
 
 class CustomStreamListener(tweepy.StreamListener):
