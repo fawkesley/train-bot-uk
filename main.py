@@ -57,7 +57,7 @@ def turn_on_five_seconds(i):
         existing_timer.cancel()
 
     turn_on_now(i)
-    TIMERS[i] = threading.Timer(5, turn_off_now, [i])
+    TIMERS[i] = threading.Timer(2, turn_off_now, [i])
     TIMERS[i].start()
 
 
