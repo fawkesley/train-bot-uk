@@ -13,6 +13,8 @@ import tweepy
 
 HASHTAGS = ['#IoT', 'python']
 
+IP = os.environ['ULTAMATION_IP']
+UDP_PORT = int(os.environ['ULTAMATION_UDP_PORT'])
 
 _CONSUMER_KEY = os.environ['CONSUMER_KEY']
 _CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
