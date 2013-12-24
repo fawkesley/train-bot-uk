@@ -3,10 +3,6 @@
 # What to search on Twitter                                                     
 export HASHTAGS="python,ruby"  
 
-# Where to send control packets
-export ULTAMATION_IP="192.168.0.147"
-export ULTAMATION_UDP_PORT="13255"
-
 # Create a new Twitter App here: https://dev.twitter.com/apps/new
 export CONSUMER_KEY='xxxx'
 export CONSUMER_SECRET='xxxx'
