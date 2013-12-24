@@ -11,7 +11,7 @@ import os
 
 import tweepy
 
-HASHTAGS = os.environ['HASHTAGS'].split(',')
+KEYWORDS = os.environ['KEYWORDS'].split(',')
 
 _CONSUMER_KEY = os.environ['CONSUMER_KEY']
 _CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
@@ -25,7 +25,7 @@ def main():
     auth.set_access_token(_ACCESS_TOKEN, _ACCESS_TOKEN_SECRET)
 
     stream = tweepy.Stream(auth, CustomStreamListener(tweet_callback))
-    stream.filter(None, HASHTAGS)  # blocking function
+    stream.filter(track=KEYWORDS)  # blocking function
 
 
 def tweet_callback(status):
@@ -33,7 +33,7 @@ def tweet_callback(status):
     #                                   status.text,
     #                                   status.created_at,
     #                                   status.source))
-    for i, hashtag in enumerate(HASHTAGS):
+    for i, hashtag in enumerate(KEYWORDS):
         if hashtag.lower() in status.text.lower():
             for line in textwrap.wrap('{}'.format(status.text)):
                 print(line)
