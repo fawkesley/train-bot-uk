@@ -11,8 +11,6 @@ import os
 
 import tweepy
 
-KEYWORDS = os.environ['KEYWORDS'].split(',')
-
 _CONSUMER_KEY = os.environ['CONSUMER_KEY']
 _CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
 _ACCESS_TOKEN = os.environ['ACCESS_TOKEN']

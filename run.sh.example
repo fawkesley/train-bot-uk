@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# What to search on Twitter                                                     
-export KEYWORDS="python,ruby"
-
 # Create a new Twitter App here: https://dev.twitter.com/apps/new
 export CONSUMER_KEY='xxxx'
 export CONSUMER_SECRET='xxxx'
