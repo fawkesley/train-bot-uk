@@ -6,4 +6,6 @@ export CONSUMER_SECRET='xxxx'
 export ACCESS_TOKEN='xxxx'
 export ACCESS_TOKEN_SECRET='xxxx'
 
+export MY_NAME='@TrainBleep'
+
 ./main.py
