@@ -9,20 +9,24 @@ import logging
 import sys
 import textwrap
 import os
+import re
 
 import tweepy
 
-_CONSUMER_KEY = os.environ['CONSUMER_KEY']
-_CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
-_ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
-_ACCESS_TOKEN_SECRET = os.environ['ACCESS_TOKEN_SECRET']
+import uktrains
 
-_MY_NAME = os.environ['MY_NAME']
+
+_MY_NAME = os.environ.get('MY_NAME', '@TestAccount')
 
 _API = None
 
 
 def main():
+    _CONSUMER_KEY = os.environ['CONSUMER_KEY']
+    _CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
+    _ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
+    _ACCESS_TOKEN_SECRET = os.environ['ACCESS_TOKEN_SECRET']
+
     logging.basicConfig(level=logging.DEBUG)
     auth = tweepy.auth.OAuthHandler(_CONSUMER_KEY, _CONSUMER_SECRET)
     auth.set_access_token(_ACCESS_TOKEN, _ACCESS_TOKEN_SECRET)
@@ -49,13 +53,19 @@ def tweet_callback(status):
 
     send_tweet(status.author.screen_name, response)
 
+_SCREEN_NAME_RE = re.compile(r'@[A-Za-z_]+[A-Za-z0-9_]+')
+
 
 def strip_screen_names(message):
-    return message  # TODO
+    return re.sub(_SCREEN_NAME_RE, '', message).strip()
 
 
 def make_response_message(message):
-    return datetime.datetime.now().isoformat()  # TODO
+    match = re.match(r'(?P<from>.+) to (?P<to>.+)', message)
+    if match:
+        journeys = list(uktrains.search_trains(match.group('from'),
+                                               match.group('to')))
+        return ' '.join(journeys[0])
 
 
 def send_tweet(screen_name, message):
