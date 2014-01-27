@@ -65,7 +65,20 @@ def make_response_message(message):
     if match:
         journeys = list(uktrains.search_trains(match.group('from'),
                                                match.group('to')))
-        return ' '.join(journeys[0])
+        return describe_journey(journeys[0])
+
+
+def describe_journey(journey):
+    return ('{depart} to {arrive}: {time} plat {platform} [{changes}] {status}'
+            .format(
+                depart=journey.depart_station.code,
+                arrive=journey.arrive_station.code,
+                time=journey.depart_time,
+                platform=journey.platform if journey.platform else '??',
+                changes=('direct' if journey.changes == 0
+                         else '{} chg'.format(journey.changes)),
+                status=journey.status
+            ))
 
 
 def send_tweet(screen_name, message):
