@@ -22,6 +22,7 @@ _API = None
 
 
 def main():
+    logging.basicConfig(level=logging.INFO)
     _CONSUMER_KEY = os.environ['CONSUMER_KEY']
     _CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
     _ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
@@ -35,6 +36,7 @@ def main():
     _API = tweepy.API(auth)
 
     stream = tweepy.Stream(auth, CustomStreamListener(tweet_callback))
+    logging.info("Now setting up keyword tracker.")
     stream.filter(track=[_MY_NAME])  # blocking function
 
 
@@ -44,14 +46,15 @@ def tweet_callback(status):
     pretty_print_tweet(status)
 
     if not addressed_to_me(status.text):
-        print("Ignoring '{}'".format(status.text))
+        logging.debug("Ignoring '{}'".format(status.text))
         return
-
     message = strip_screen_names(status.text)
 
     response = make_response_message(message)
 
-    send_tweet(status.author.screen_name, response)
+    if response is not None:
+        logging.info("Responding: '{}'".format(response))
+        send_tweet(status.author.screen_name, response)
 
 _SCREEN_NAME_RE = re.compile(r'@[A-Za-z_]+[A-Za-z0-9_]+')
 
@@ -66,13 +69,17 @@ def make_response_message(message):
         journeys = list(uktrains.search_trains(match.group('from'),
                                                match.group('to')))
         return describe_journey(journeys[0])
+    return None
 
 
 def describe_journey(journey):
-    return ('{depart} to {arrive}: {time} plat {platform} [{changes}] {status}'
+    return ('{dep_name} {dep_code} to {arr_name} {arr_code}: {time} '
+            'plat {platform} [{changes}] {status}'
             .format(
-                depart=journey.depart_station.code,
-                arrive=journey.arrive_station.code,
+                dep_code=journey.depart_station.code,
+                arr_code=journey.arrive_station.code,
+                dep_name=journey.depart_station.name,
+                arr_name=journey.arrive_station.name,
                 time=journey.depart_time,
                 platform=journey.platform if journey.platform else '??',
                 changes=('direct' if journey.changes == 0
@@ -94,8 +101,8 @@ def pretty_print_tweet(status):
     #                                   status.created_at,
     #                                   status.source))
     for line in textwrap.wrap('{}'.format(status.text)):
-        print(line)
-    print('    - @{}\n'.format(status.author.screen_name))
+        logging.info(line)
+    logging.info('    - @{}\n'.format(status.author.screen_name))
 
 
 def addressed_to_me(text):
