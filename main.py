@@ -54,7 +54,7 @@ def tweet_callback(status):
 
     if response is not None:
         logging.info("Responding: '{}'".format(response))
-        send_tweet(status.author.screen_name, response)
+        send_tweet(status.author.screen_name, response, status.id)
 
 _SCREEN_NAME_RE = re.compile(r'@[A-Za-z_]+[A-Za-z0-9_]+')
 
@@ -88,11 +88,13 @@ def describe_journey(journey):
             ))
 
 
-def send_tweet(screen_name, message):
+def send_tweet(screen_name, message, tweet_id=None):
     global _API
-    _API.update_status('@{screen_name} {message}'.format(
-        screen_name=screen_name,
-        message=message))
+    _API.update_status(
+        '@{screen_name} {message}'.format(
+            screen_name=screen_name,
+            message=message),
+        in_reply_to_status_id=tweet_id)
 
 
 def pretty_print_tweet(status):
