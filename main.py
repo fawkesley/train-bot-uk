@@ -69,6 +69,10 @@ def make_response_message(message):
         journeys = list(uktrains.search_trains(match.group('from'),
                                                match.group('to')))
         return describe_journey(journeys[0])
+
+    if 'ping' in message.lower():
+        return 'pong ' + datetime.datetime.now().isoformat()
+
     return None
 
 
