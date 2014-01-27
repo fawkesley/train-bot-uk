@@ -36,7 +36,7 @@ def main():
     _API = tweepy.API(auth)
 
     stream = tweepy.Stream(auth, CustomStreamListener(tweet_callback))
-    logging.info("Now setting up keyword tracker.")
+    logging.info("Now tracking Twitter for {}".format(_MY_NAME))
     stream.filter(track=[_MY_NAME])  # blocking function
 
 
