@@ -101,14 +101,15 @@ def make_response_message(message):
 
 
 def describe_journey(journey):
-    return ('{dep_name} {dep_code} to {arr_name} {arr_code}: {time} '
-            'plat {platform} [{changes}] {status}'
+    return ('{dep_time} => {arr_time} plat {platform}: {dep_name} {dep_code} '
+            'to {arr_name} {arr_code} | {changes} | {status}'
             .format(
                 dep_code=journey.depart_station.code,
                 arr_code=journey.arrive_station.code,
                 dep_name=journey.depart_station.name,
                 arr_name=journey.arrive_station.name,
-                time=journey.depart_time,
+                dep_time=journey.depart_time,
+                arr_time=journey.arrive_time,
                 platform=journey.platform if journey.platform else '??',
                 changes=('direct' if journey.changes == 0
                          else '{} chg'.format(journey.changes)),
