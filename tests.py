@@ -28,8 +28,8 @@ def test_describe_journey():
             status='on time'))
 
     assert_equal(
-        ('Liverpool Lime Street LIV to London Euston EUS: 17:35 '
-         'plat 3 [2 chg] on time'),
+        ('17:35 => 19:53 plat 3: Liverpool Lime Street LIV to '
+         'London Euston EUS | 2 chg | on time'),
         description)
 
 
