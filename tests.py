@@ -43,3 +43,13 @@ def _test_make_response_message():
             [call('liverpool', 'euston')],
             mock.call_args_list)
         assert_equal('x y z', result)
+
+
+def test_station_names_decoded_correctly():
+    with patch('uktrains.search_trains') as mock:
+        mock.return_value = []
+
+        make_response_message('dore &amp; totley to london')
+        assert_equal(
+            [call('dore & totley', 'london')],
+            mock.call_args_list)

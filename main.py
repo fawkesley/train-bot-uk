@@ -92,7 +92,8 @@ def make_response_message(message):
         logging.info("Searching '{}' to '{}'".format(from_, to))
 
         journeys = uktrains.search_trains(from_, to)
-        return describe_journey(journeys[0])
+        if len(journeys) > 0:
+            return describe_journey(journeys[0])
 
     if 'ping' in message.lower():
         return 'pong ' + datetime.datetime.now().isoformat()
