@@ -11,6 +11,7 @@ import re
 import sys
 import textwrap
 import threading
+import HTMLParser
 
 import tweepy
 
@@ -91,7 +92,9 @@ def make_response_message(message):
         from_, to = match.group('from'), match.group('to')
         logging.info("Searching '{}' to '{}'".format(from_, to))
 
-        journeys = uktrains.search_trains(from_, to)
+        journeys = uktrains.search_trains(
+            _unescape(from_),
+            _unescape(to))
         if len(journeys) > 0:
             return describe_journey(journeys[0])
 
@@ -99,6 +102,13 @@ def make_response_message(message):
         return 'pong ' + datetime.datetime.now().isoformat()
 
     return None
+
+def _unescape(string):
+    """
+    >>> _unescape('&amp;')
+    u'&'
+    """
+    return HTMLParser.HTMLParser().unescape(string)
 
 
 def describe_journey(journey):
