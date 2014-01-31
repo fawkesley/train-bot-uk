@@ -1,2 +1,2 @@
 tweepy>=2.1
--e git+https://github.com/paulfurley/python-uk-trains.git@0.0.4#egg=uktrains
+-e git+https://github.com/paulfurley/python-uk-trains.git@0.0.5#egg=uktrains
