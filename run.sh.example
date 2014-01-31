@@ -8,4 +8,4 @@ export ACCESS_TOKEN_SECRET='xxxx'
 
 export MY_NAME='@YourTwitterBot'
 
-./main.py
+./train_bot_uk/main.py
