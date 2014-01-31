@@ -1,4 +1,2 @@
-nose
-mock
 tweepy>=2.1
 -e git+https://github.com/paulfurley/python-uk-trains.git@0.0.3#egg=uktrains
