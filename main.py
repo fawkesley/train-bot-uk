@@ -94,7 +94,8 @@ def make_response_message(message):
 
         journeys = uktrains.search_trains(
             _unescape(from_),
-            _unescape(to))
+            _unescape(to),
+            when=datetime.datetime.now() + datetime.timedelta(minutes=5))
         if len(journeys) > 0:
             return describe_journey(journeys[0])
 
