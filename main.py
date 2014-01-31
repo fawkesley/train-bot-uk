@@ -87,21 +87,53 @@ def strip_screen_names(message):
 
 
 def make_response_message(message):
-    match = re.match(r'(?P<from>.+) to (?P<to>.+)', message)
-    if match:
-        from_, to = match.group('from'), match.group('to')
-        logging.info("Searching '{}' to '{}'".format(from_, to))
+    parsers = [
+        TrainJourneyResponder(),
+        PingResponder(),
+    ]
 
-        journeys = uktrains.search_trains(
-            _unescape(from_),
-            _unescape(to))
+    for match_function, reply_function in parsers:
+        response_params = match_function(message)
+        if response_params is not None:
+            return reply_function(**response_params)
+
+
+class MessageResponder(object):
+    @classmethod
+    def match(message):
+        pass
+
+    @classmethod
+    def reply(**args):
+        return None  # no reply
+
+
+class TrainJourneyResponder(MessageResponder):
+    @classmethod
+    def match(message):
+        match = re.match(r'(?P<from>.+) to (?P<to>.+)', message)
+        if match:
+            from_, to = match.group('from'), match.group('to')
+            logging.info("Searching '{}' to '{}'".format(from_, to))
+
+            return {'depart_station': _unescape(from_),
+                    'arrive_station': _unescape(to)}
+
+    @classmethod
+    def reply(depart_station, arrive_station):
+        journeys = uktrains.search_trains(depart_station, arrive_station)
         if len(journeys) > 0:
             return describe_journey(journeys[0])
 
-    if 'ping' in message.lower():
+
+class PingResponder(MessageResponder):
+    def match(self, message):
+        if 'ping' in message.lower():
+            return {}
+
+    def reply(self):
         return 'pong ' + datetime.datetime.now().isoformat()
 
-    return None
 
 def _unescape(string):
     """
