@@ -2,7 +2,9 @@
 from mock import patch, call
 from nose.tools import assert_equal
 
-from main import strip_screen_names, make_response_message, describe_journey
+from train_bot_uk import strip_screen_names, make_response_message
+from train_bot_uk.responders.journey_responder import describe_journey
+
 from uktrains import Journey, Station
 
 
