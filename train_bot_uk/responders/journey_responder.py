@@ -53,5 +53,5 @@ def describe_journey(journey):
                 platform=journey.platform if journey.platform else '??',
                 changes=('direct' if journey.changes == 0
                          else '{} chg'.format(journey.changes)),
-                status=journey.status
+                status='no info' if not journey.status else journey.status
             ))
