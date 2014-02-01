@@ -43,6 +43,22 @@ def test_no_changes_says_direct():
          'London Euston EUS | direct | on time'),
         description)
 
+def test_empty_status_becomes_unknown():
+    description = describe_journey(
+        Journey(
+            depart_station=Station('Liverpool Lime Street', 'LIV'),
+            arrive_station=Station('London Euston', 'EUS'),
+            depart_time='17:35',
+            arrive_time='19:53',
+            platform=3,
+            changes=0,
+            status=''))
+
+    assert_equal(
+        ('17:35 => 19:53 plat 3: Liverpool Lime Street LIV to '
+         'London Euston EUS | direct | no info'),
+        description)
+
 
 def _test_make_response_message():
 
