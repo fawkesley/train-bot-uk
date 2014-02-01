@@ -59,7 +59,7 @@ def _test_make_response_message():
 def test_station_names_decoded_correctly():
     test_cases = [
         ('liverpool to euston', 'liverpool', 'euston'),
-        #('foo to bar ', 'foo', 'bar'),                        # trailing space
+        ('foo to bar ', 'foo', 'bar'),                         # trailing space
         ('dore &amp; totley to foo', 'dore & totley', 'foo'),  # encoded
     ]
 
