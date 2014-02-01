@@ -3,6 +3,7 @@
 
 from __future__ import unicode_literals
 
+import datetime
 import logging
 import re
 import HTMLParser
@@ -23,7 +24,10 @@ class JourneyResponder(MessageResponder):
                     'arrive_station': _unescape(to)}
 
     def reply(self, depart_station, arrive_station):
-        journeys = uktrains.search_trains(depart_station, arrive_station)
+        journeys = uktrains.search_trains(
+            depart_station,
+            arrive_station,
+            when=datetime.datetime.now() + datetime.timedelta(minutes=5))
         if len(journeys) > 0:
             return describe_journey(journeys[0])
 
