@@ -20,8 +20,8 @@ class JourneyResponder(MessageResponder):
             from_, to = match.group('from'), match.group('to')
             logging.info("Searching '{}' to '{}'".format(from_, to))
 
-            return {'depart_station': _unescape(from_),
-                    'arrive_station': _unescape(to)}
+            return {'depart_station': _format_station(from_),
+                    'arrive_station': _format_station(to)}
 
     def reply(self, depart_station, arrive_station):
         journeys = uktrains.search_trains(
@@ -32,12 +32,15 @@ class JourneyResponder(MessageResponder):
             return describe_journey(journeys[0])
 
 
-def _unescape(string):
+def _format_station(string):
     """
-    >>> _unescape('&amp;')
+    Santise the station name before using it to search with.
+    >>> _format_station('&amp;')
     u'&'
+    >>> _format_station('x &amp; y ')
+    u'x & y'
     """
-    return HTMLParser.HTMLParser().unescape(string)
+    return HTMLParser.HTMLParser().unescape(string).strip()
 
 
 def describe_journey(journey):
