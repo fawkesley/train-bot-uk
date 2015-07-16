@@ -2,3 +2,5 @@ run.sh
 venv
 *.pyc
 .*.swp
+*.egg-info
+/credentials.sh

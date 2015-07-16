@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import datetime
 import logging
 import re
-import HTMLParser
+from six.moves.html_parser import HTMLParser
 
 import uktrains
 
@@ -40,7 +40,7 @@ def _format_station(string):
     >>> _format_station('x &amp; y ')
     u'x & y'
     """
-    return HTMLParser.HTMLParser().unescape(string).strip()
+    return HTMLParser().unescape(string).strip()
 
 
 def describe_journey(journey):
